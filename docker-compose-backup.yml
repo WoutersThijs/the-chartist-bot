@@ -6,18 +6,18 @@ services:
     volumes:
       - ./app:/usr/src/app
       - /usr/src/app/node_modules
-    depends_on:
-      - mongodb
+    links:
+      - mongo
   mongodb:
     container_name: mongodb
     image: mongo
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=thechartist
-      - MONGO_INITDB_ROOT_PASSWORD=thechartist
-      - MONGO_INITDB_DATABASE=thechartists
+      - MONGO_INITDB_ROOT_USERNAME=a
+      - MONGO_INITDB_ROOT_PASSWORD=a
     ports:
       - '27017:27017'
     volumes:
-      - mongodata:/data/db
+      - ./data:/data/db
+
 volumes:
-  mongodata:
+  mongo-db:

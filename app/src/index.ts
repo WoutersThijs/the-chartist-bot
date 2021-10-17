@@ -1,5 +1,6 @@
 import DiscordJS, { GuildManager, GuildMember, Intents, Interaction, MessageEmbed, TextChannel } from 'discord.js'
 import dotenv from 'dotenv'
+import connect from './utils/mongo'
 const approvals = require('./components/approvals')
 
 dotenv.config()
@@ -22,7 +23,9 @@ const client = new DiscordJS.Client({
 })
 
 client.on('ready', () => {
-    console.log('The bot is ready.')
+    console.log('The bot is ready!')
+
+    connect();
 
     // Register components
     approvals(client)
