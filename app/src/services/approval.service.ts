@@ -13,10 +13,9 @@ export async function findApproval(
 
 export async function findAndUpdateApproval(
     query: FilterQuery<ApprovalDocument>,
-    update: UpdateQuery<ApprovalDocument>,
-    options: QueryOptions){
+    update: UpdateQuery<ApprovalDocument>){
 
-    return ApprovalModel.findOneAndUpdate(query, update, options);
+    return ApprovalModel.findOneAndUpdate(query, update);
 }
 
 export async function deleteApproval(

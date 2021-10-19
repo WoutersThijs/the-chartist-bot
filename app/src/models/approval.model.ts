@@ -10,6 +10,7 @@ export enum Status {
 export interface ApprovalInput{
     user: UserDocument['_id'];
     message: String;
+    twitter: String;
     // status: Status;
 }
 
@@ -27,6 +28,10 @@ const ApprovalSchema = new mongoose.Schema(
         message: {
             type: String,
             required: true
+        },
+        twitter: {
+            type: String,
+            required: false
         }
         // status: {
         //     type: Status,
