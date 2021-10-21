@@ -21,7 +21,7 @@ module.exports = (client: Client) => {
         if (messages.size === 0) {
             channel?.send(text)
 
-            // Not first message -> Change msg 1
+        // Not first message -> Change msg 1
         } else {
             for (const message of messages) {
                 message[1].edit(text)
@@ -32,16 +32,11 @@ module.exports = (client: Client) => {
 
     // Join server event
     client.on('guildMemberAdd', async guildMember => {
-        // Look for discord id in database
-        const user = await UserService.findUser({ discord_id: guildMember.id })
+        UserService.createUser({
+            discord_id: guildMember.id.toString(),
+            username: guildMember.displayName.toString()
+        })
 
-        // If not in database, add to database
-        if (!user) {
-            UserService.createUser({
-                discord_id: guildMember.id.toString(),
-                username: guildMember.displayName.toString()
-            })
-        }
 
         // DM user on join (ask for approval msg and Twitter name)
         guildMember.send('Welcome to The Chartist Discord server! \n'
@@ -79,7 +74,7 @@ module.exports = (client: Client) => {
                     }
 
                     if (last_msg.includes('Twitter')) {
-                        const approval = await ApprovalService.findAndUpdateApproval({ user: user?.id }, { twitter: message.content })
+                        const approval = await ApprovalService.findAndUpdateApproval({ user: user?.id }, { twitter: message.content }, { lean : false })
 
                         let embed = new MessageEmbed()
                             .setTitle('\n' + message.author.username + '\n')
@@ -151,11 +146,13 @@ module.exports = (client: Client) => {
     // Remove approvals on ban / kick / leave
     client.on('guildMemberRemove', async member => {
         const user = await UserService.findUser({ discord_id: member.id })
+        await UserService.deleteUser({ discord_id: member.id })
         const approval = await ApprovalService.deleteApproval({ user: user?.id })
     })
 
     client.on('guildBanAdd', async guildban => {
         const user = await UserService.findUser({ discord_id: guildban.user.id })
+        await UserService.deleteUser({ discord_id: guildban.user.id })
         const approval = await ApprovalService.deleteApproval({ user: user?.id })
     })
 }

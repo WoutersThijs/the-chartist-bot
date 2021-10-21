@@ -6,9 +6,10 @@ export async function createUser(input: UserInput){
 }
 
 export async function findUser(
-    query: FilterQuery<UserDocument>){
+    query: FilterQuery<UserDocument>,
+    options: QueryOptions = { lean : false }){
 
-    return UserModel.findOne({query});
+    return UserModel.findOne(query, {}, options);
 }
 
 export async function findAndUpdateUser(

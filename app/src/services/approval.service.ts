@@ -6,16 +6,18 @@ export async function createApproval(input: ApprovalInput){
 }
 
 export async function findApproval(
-    query: FilterQuery<ApprovalDocument>){
+    query: FilterQuery<ApprovalDocument>,
+    options: QueryOptions = { lean : false }){
 
-    return ApprovalModel.findOne(query);
+    return ApprovalModel.findOne(query, {}, options);
 }
 
 export async function findAndUpdateApproval(
     query: FilterQuery<ApprovalDocument>,
-    update: UpdateQuery<ApprovalDocument>){
+    update: UpdateQuery<ApprovalDocument>,
+    options: QueryOptions){
 
-    return ApprovalModel.findOneAndUpdate(query, update);
+    return ApprovalModel.findOneAndUpdate(query, update, options);
 }
 
 export async function deleteApproval(
