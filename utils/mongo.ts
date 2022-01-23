@@ -4,7 +4,7 @@ function connect(){
     const dbUri = process.env.MONGO_URI as string;
 
     return mongoose
-        .connect("mongodb://thechartist:thechartist@mongodb:27017/thechartists?authSource=admin")
+        .connect(dbUri as string)
         .then(() => {
             console.log("MongoDB connected.")
         })
